@@ -117,7 +117,7 @@ def _cce_lse_forward_kernel(
     tl.atomic_xchg(this_locks, 0)
 
 
-_cce_lse_forward_kernel = triton.jit(_cce_lse_forward_kernel)
+_cce_lse_forward_kernel = triton.jit(_cce_lse_forward_kernel, do_not_specialize_on_alignment=['B', 'num_locks'])
 _cce_lse_forward_kernel = triton.heuristics(  # type: ignore
     {
         "EVEN_D": lambda args: args["D"] % args["BLOCK_D"] == 0,
